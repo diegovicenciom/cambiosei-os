@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo-hlf.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambulatorio Dinámico — Hospital Clínico Dra. Eloísa Díaz La Florida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      const tok = (v) => `rgb(var(--c-${v}) / <alpha-value>)`;
+      tailwind.config = {
+        theme: { extend: {
+          colors: {
+            // Colores = variables CSS (src/styles/tokens.css): cambian solos entre tema claro y oscuro.
+            "primary": tok("primary"), "primary-container": tok("primary-cont"), "on-primary": tok("on-primary"),
+            "hlf": tok("hlf"), "hlf-claro": tok("hlf-claro"), "gob-rojo": tok("gob-rojo"),
+            "secondary": tok("secondary"), "secondary-container": tok("secondary-cont"), "on-secondary-container": tok("on-secondary-cont"),
+            "tertiary": tok("tertiary"), "tertiary-fixed": tok("tertiary-fixed"), "on-tertiary-fixed": tok("on-tertiary-fixed"), "on-tertiary-fixed-variant": tok("on-tertiary-fixed-var"),
+            "error": tok("error"), "error-container": tok("error-cont"), "on-error": tok("on-error"), "on-error-container": tok("on-error-cont"),
+            "background": tok("bg"), "surface": tok("bg"), "on-surface": tok("text"), "on-surface-variant": tok("muted"),
+            "surface-container-lowest": tok("raised"), "surface-container-low": tok("low"), "surface-container": tok("cont"),
+            "surface-container-high": tok("high"), "outline": tok("outline"), "outline-variant": tok("divider"),
+            "ambar": tok("ambar"), "ambar-container": tok("ambar-cont"), "verde": tok("verde"), "verde-container": tok("verde-cont")
+          },
+          fontFamily: { sans: ["Open Sans", "system-ui", "sans-serif"] },
+        } },
+      };
+    </script>
+  </head>
+  <body class="bg-background text-on-surface font-sans text-[14px] antialiased [font-variant-numeric:tabular-nums]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Ambulatorio Dinamico HLF - priorizacion clinica evolutiva (AWS Breaking Barriers Chile 2026)
+
+Parameters:
+  ModelId:
+    Type: String
+    Default: ""
+    Description: ID del modelo (o inference profile) de Bedrock. Vacio = explicaciones por plantilla.
+  BedrockRegion:
+    Type: String
+    Default: ""
+    Description: Region de Bedrock si es distinta a la del stack. Vacio = misma region.
+
+Conditions:
+  HasBedrockRegion: !Not [!Equals [!Ref BedrockRegion, ""]]
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 1024
+    Architectures: [arm64]
+
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  RegistrosTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id_paciente
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id_paciente
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: ["*"]
+        AllowMethods: [GET, POST, OPTIONS]
+        AllowHeaders: [content-type]
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: app.handler
+      Environment:
+        Variables:
+          BUCKET: !Ref DataBucket
+          PERFILES_KEY: perfiles.json
+          BOX_KEY: box.json
+          TABLE: !Ref RegistrosTable
+          MODEL_ID: !Ref ModelId
+          FECHA_REFERENCIA: hoy  # fecha real de Chile; AAAA-MM-DD para simular
+          BEDROCK_REGION: !If [HasBedrockRegion, !Ref BedrockRegion, !Ref AWS::Region]
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref DataBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref RegistrosTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - bedrock:InvokeModelWithResponseStream
+                - textract:DetectDocumentText
+              Resource: "*"
+      Events:
+        Todo:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL de la API (poner en VITE_API_URL del front)
+    Value: !Sub "https://${Api}.execute-api.${AWS::Region}.amazonaws.com"
+  BucketName:
+    Description: Bucket donde subir perfiles.json y box.json
+    Value: !Ref DataBucket
+  TableName:
+    Value: !Ref RegistrosTable

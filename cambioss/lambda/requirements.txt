@@ -1,0 +1,3 @@
+# boto3 ya viene incluido en el runtime de Lambda.
+# Pydantic valida los eventos que se extraen de informes y fotos (modelos.py).
+pydantic>=2.6,<3

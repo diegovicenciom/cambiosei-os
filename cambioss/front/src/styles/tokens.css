@@ -1,0 +1,114 @@
+/* Tokens de color claro/oscuro (tomados del PR #1 de agusnoopy3000, solo la parte de tema).
+   Cada color es un triplete RGB para que Tailwind pueda aplicar opacidad: rgb(var(--c-x) / <alpha-value>).
+   Los niveles clínicos usan rojo / ámbar / verde; el acento de la interfaz es el azul gob para no confundirse con "crítico". */
+:root {
+  color-scheme: light;
+  --c-bg: 244 245 246;
+  --c-raised: 255 255 255;
+  --c-low: 238 240 242;
+  --c-cont: 229 232 235;
+  --c-high: 216 220 224;
+  --c-text: 27 29 31;
+  --c-muted: 79 86 93;
+  --c-outline: 107 114 122;
+  --c-divider: 200 205 210;
+
+  --c-primary: 15 105 180;      /* azul gob */
+  --c-primary-cont: 10 79 136;
+  --c-on-primary: 255 255 255;
+  --c-hlf: 81 128 67;           /* verde HLF */
+  --c-hlf-claro: 232 240 228;
+  --c-gob-rojo: 235 60 70;
+  --c-secondary: 74 96 122;
+  --c-secondary-cont: 200 223 254;
+  --c-on-secondary-cont: 77 99 125;
+  --c-tertiary: 81 40 166;
+  --c-tertiary-fixed: 233 221 255;
+  --c-on-tertiary-fixed: 35 0 92;
+  --c-on-tertiary-fixed-var: 82 42 167;
+
+  /* niveles: crítico / alto / bajo (oklch de la referencia, convertidos a sRGB) */
+  --c-error: 179 54 44;
+  --c-error-cont: 251 227 223;
+  --c-on-error: 255 255 255;
+  --c-on-error-cont: 122 29 20;
+  --c-ambar: 138 81 0;
+  --c-ambar-cont: 253 231 200;
+  --c-verde: 31 107 53;
+  --c-verde-cont: 213 239 221;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --c-bg: 16 18 20;
+    --c-raised: 26 29 32;
+    --c-low: 32 36 39;
+    --c-cont: 39 43 47;
+    --c-high: 50 55 60;
+    --c-text: 232 234 236;
+    --c-muted: 168 175 182;
+    --c-outline: 125 133 141;
+    --c-divider: 62 68 74;
+    --c-primary: 99 170 235;
+    --c-primary-cont: 156 204 245;
+    --c-on-primary: 5 32 56;
+    --c-hlf: 140 192 122;
+    --c-hlf-claro: 30 45 26;
+    --c-gob-rojo: 240 100 108;
+    --c-secondary: 160 180 205;
+    --c-secondary-cont: 40 56 78;
+    --c-on-secondary-cont: 200 223 254;
+    --c-tertiary: 196 170 255;
+    --c-tertiary-fixed: 50 30 100;
+    --c-on-tertiary-fixed: 233 221 255;
+    --c-on-tertiary-fixed-var: 210 190 255;
+    --c-error: 255 138 122;
+    --c-error-cont: 74 23 18;
+    --c-on-error: 40 5 2;
+    --c-on-error-cont: 255 217 211;
+    --c-ambar: 240 180 106;
+    --c-ambar-cont: 61 42 14;
+    --c-verde: 127 211 154;
+    --c-verde-cont: 21 48 30;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: 16 18 20;
+  --c-raised: 26 29 32;
+  --c-low: 32 36 39;
+  --c-cont: 39 43 47;
+  --c-high: 50 55 60;
+  --c-text: 232 234 236;
+  --c-muted: 168 175 182;
+  --c-outline: 125 133 141;
+  --c-divider: 62 68 74;
+  --c-primary: 99 170 235;
+  --c-primary-cont: 156 204 245;
+  --c-on-primary: 5 32 56;
+  --c-hlf: 140 192 122;
+  --c-hlf-claro: 30 45 26;
+  --c-gob-rojo: 240 100 108;
+  --c-secondary: 160 180 205;
+  --c-secondary-cont: 40 56 78;
+  --c-on-secondary-cont: 200 223 254;
+  --c-tertiary: 196 170 255;
+  --c-tertiary-fixed: 50 30 100;
+  --c-on-tertiary-fixed: 233 221 255;
+  --c-on-tertiary-fixed-var: 210 190 255;
+  --c-error: 255 138 122;
+  --c-error-cont: 74 23 18;
+  --c-on-error: 40 5 2;
+  --c-on-error-cont: 255 217 211;
+  --c-ambar: 240 180 106;
+  --c-ambar-cont: 61 42 14;
+  --c-verde: 127 211 154;
+  --c-verde-cont: 21 48 30;
+}
+
+html { background: rgb(var(--c-bg)); }
+body { background: rgb(var(--c-bg)); color: rgb(var(--c-text)); }
+input, select, textarea { background-color: rgb(var(--c-raised)); color: inherit; }
+:focus-visible { outline: 3px solid rgb(var(--c-primary)); outline-offset: 2px; }
